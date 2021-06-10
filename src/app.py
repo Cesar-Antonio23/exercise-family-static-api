@@ -36,11 +36,23 @@ def handle_hello():
     }
     return jsonify(response_body), 200
 
-@app.route('/members', methods=['POST'])
+@app.route('/member', methods=['POST'])
 def add_member():
-    jackson_family.add_member(request.JSON())
+    member = request.get_json()
+    jackson_family.add_member(member)
     return jsonify("MEMEBER ADD"), 200
 # this only runs if `$ python src/app.py` is executed
+
+@app.route('/member/<int:member_id>', methods=["GET"])
+def get_member(member_id):
+
+    member = jackson_family.get_all_members(member_id)
+    response_body = {
+        "member": member
+    }
+    return jsonify(response_body["MEMBER"]), 200
+
+
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=True)
