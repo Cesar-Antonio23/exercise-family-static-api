@@ -45,13 +45,19 @@ def add_member():
 
 @app.route('/member/<int:member_id>', methods=["GET"])
 def get_member(member_id):
-
     member = jackson_family.get_all_members(member_id)
     response_body = {
         "member": member
     }
     return jsonify(response_body["MEMBER"]), 200
 
+@app.route('/member/<int:member_id>', methods=['DELETE'])
+def delete(member_id):
+    jackson_family.delete_member(member_id)
+    response_body = {
+        "done": True
+    }
+    return jsonify(response_body), 200
 
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
